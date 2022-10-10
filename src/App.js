@@ -8,7 +8,6 @@ import {
 import { ToastContainer } from 'react-toastify';
 
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Formations from "./pages/Formations";
 import Registration from "./pages/Registration";
 
@@ -41,7 +40,6 @@ const App = () => {
           />
         <Routes>
           <Route exact path="/" element={<Home />}/>
-          <Route exact path="/about" element={<About />}/>
           <Route exact path="/formations" element={<Formations/>}/>
           <Route exact path="/registration" element={<Registration/>}/>
 

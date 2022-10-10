@@ -24,7 +24,7 @@ const Login = () => {
             await logIn(email, password);
             navigate("/admin/dashboard");
         } catch (err) {
-            setError(err.message);
+            setError("login/password:error");
         }
     };
 

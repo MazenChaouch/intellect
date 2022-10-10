@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Col, Container, Navbar, Row, Table } from "react-bootstrap"
-import { FaTrash, FaUsers } from 'react-icons/fa'
+import { FaTrash, FaUsers ,FaEdit } from 'react-icons/fa'
 import { GiBookmarklet } from "react-icons/gi"
 import { BsFillBookmarkPlusFill } from "react-icons/bs"
 import { useUserAuth } from "../context/userAuthContext";
@@ -8,11 +8,12 @@ import { toast } from "react-toastify";
 import generateId from "../lib/generateId";
 import { collection, deleteDoc, doc, onSnapshot, query, setDoc } from "firebase/firestore";
 import { fireStore, storage } from "../auth/Firebase";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import ReactQuill from 'react-quill';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useEffect } from "react";
 import parse from 'html-react-parser';
+import ReadCandidat from '../components/ReadCandidat';
 
 const Dashboard = () => {
     
@@ -133,6 +134,9 @@ const Dashboard = () => {
             });
         });
     }
+    const deleteCandidat = (id) => {
+        deleteDoc(doc(fireStore, "candidats", id))
+    }
 
 
     useEffect(() => {
@@ -188,7 +192,7 @@ const Dashboard = () => {
                     </Col>
                 </Row>
 
-                <h2 className="mb-3"><FaUsers size={25} className="mb-1" /> Nos candidats</h2>
+                <h2 className="mb-3 pt-5"><FaUsers size={25} className="mb-1" /> Nos candidats</h2>
                 <Table striped bordered hover size="sm" responsive>
                     <thead>
                         <tr>
@@ -209,41 +213,22 @@ const Dashboard = () => {
                             <th>Telephone parent</th>
                             <th>Formation</th>
                             <th>Code postal</th>
+                            <th>Modifier</th>
                             <th>Supprimer</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            candidats.map((candidat, index) => {
+                            candidats.map((candidat,index) => {
                                 return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{candidat.cin}</td>
-                                        <td>{candidat.civilite}</td>
-                                        <td>{candidat.situation}</td>
-                                        <td>{candidat.niveau}</td>
-                                        <td>{candidat.firstname}</td>
-                                        <td>{candidat.lastname}</td>
-                                        <td>{candidat.nationalite}</td>
-                                        <td>{candidat.facebook}</td>
-                                        <td>{candidat.email}</td>
-                                        <td>{candidat.ville}</td>
-                                        <td>{candidat.dateDeNaissance}</td>
-                                        <td>{candidat.lieuDeNaissance}</td>
-                                        <td>{candidat.tel}</td>
-                                        <td>{candidat.telParent}</td>
-                                        <td>{candidat.formation}</td>
-                                        <td>{candidat.codePostal}</td>
-                                        <td><Button variant="danger" onClick={() => {deleteDoc(doc(fireStore, "candidats", candidat.id))}}><FaTrash /></Button></td>
-                                    </tr>
-                                )
+                                    <ReadCandidat candidat={candidat } index={index} deleteCandidat={deleteCandidat}/>
+                                    )
                             })
                         }
-                        
                     </tbody>
                 </Table>
 
-                <h2 className="mb-3"><GiBookmarklet size={25} className="mb-1" /> Nos formations</h2>
+                <h2 className="mb-3  pt-5"><GiBookmarklet size={25} className="mb-1" /> Nos formations</h2>
                 <Table striped bordered hover size="sm" >
                     <thead>
                         <tr>
@@ -267,7 +252,7 @@ const Dashboard = () => {
                                         <td>{formation.formateur}</td>
                                         <td>{formation.price}DT</td>
                                         <td>{formation.duration}H</td>
-                                        <td><Button variant="danger" onClick={() => {deleteDoc(doc(fireStore, "formations", formation.id))}}><FaTrash /></Button></td>
+                                        <td><Button variant="danger" onClick={() => {deleteDoc(doc(fireStore, "formations", formation.id))}}><FaTrash size={20} className="mb-1" /></Button></td>
                                     </tr>
                                 )
                             })
@@ -276,7 +261,7 @@ const Dashboard = () => {
 
                 </Table>
 
-                <h2><BsFillBookmarkPlusFill  size={25} className="mb-1" /> Ajouter une formation</h2>
+                <h2 className=" pt-5"><BsFillBookmarkPlusFill  size={25} className="mb-1" /> Ajouter une formation</h2>
 
                 <form className="row g-3 mt-2 rounded" onSubmit={addFormation} method="post">
                     <div className="col-md-6">
