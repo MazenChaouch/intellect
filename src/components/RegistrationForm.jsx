@@ -2,14 +2,13 @@ import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import AuthCode from 'react-auth-code-input';
 
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
-
 import { collection, doc, onSnapshot, query, setDoc } from "firebase/firestore";
 import { fireStore } from "../auth/Firebase";
 
 import { toast } from 'react-toastify';
 import generateId from "../lib/generateId";
+import PhoneInput from "react-phone-number-input";
+import 'react-phone-number-input/style.css'
 
 const RegistrationForm = () => {
 
@@ -172,7 +171,7 @@ const RegistrationForm = () => {
             <div className="col-md-3">
                 <label for="inputPassword4" className="form-label fw-bold">Civilite</label>
                 <br />
-                <select className="form-select" value={civilite} onChange={(e) => setCivilite(e.currentTarget.value)}>
+                <select className="form-select" value={civilite} onChange={(e) => setCivilite(e.currentTarget.value)} required>
                     <option selected disabled hidden>-- Choisir votre civilite --</option>
                     <option value="Monsieur">Monsieur</option>
                     <option value="Madame">Madame</option>
@@ -183,7 +182,7 @@ const RegistrationForm = () => {
             <div className="col-md-3">
                 <label for="inputPassword4" className="form-label fw-bold">Situation actuelle</label>
                 <br />
-                <select className="form-select" value={situation} onChange={e => setSituation(e.currentTarget.value)}>
+                <select className="form-select" value={situation} onChange={e => setSituation(e.currentTarget.value)} required>
                     <option selected disabled hidden>-- Choisir votre situation actuelle --</option>
                     <option>A la recherche d'un emploi</option>
                     <option>Etudiant</option>
@@ -193,43 +192,43 @@ const RegistrationForm = () => {
 
             <div className="col-md-3">
                 <label className="form-label fw-bold size-lg">Niveau scolaire</label>
-                <input type="text" value={niveau} onChange={(e) => setNiveau(e.currentTarget.value)} className="form-control" placeholder="Entrer votre niveau scolaire" />
+                <input type="text" value={niveau} onChange={(e) => setNiveau(e.currentTarget.value)} className="form-control" placeholder="Entrer votre niveau scolaire" required/>
             </div>
 
             <div className="col-md-6">
                 <label for="inputEmail4" className="form-label fw-bold">Nom</label>
-                <input type="text" value={firstname} onChange={(e) => setFirstname(e.currentTarget.value)} className="form-control" placeholder="Entrer votre nom" />
+                <input type="text" value={firstname} onChange={(e) => setFirstname(e.currentTarget.value)} className="form-control" placeholder="Entrer votre nom" required/>
             </div>
 
             <div className="col-md-6">
                 <label for="inputPassword4" className="form-label fw-bold">Prenom</label>
-                <input type="text" value={lastname} onChange={(e) => setLastname(e.currentTarget.value)} className="form-control" placeholder="Entrer votre prenom" />
+                <input type="text" value={lastname} onChange={(e) => setLastname(e.currentTarget.value)} className="form-control" placeholder="Entrer votre prenom" required/>
             </div>
             <div className="col-md-6">
                 <label for="inputPassword4" className="form-label fw-bold">Nationalite</label>
-                <input type="text" value={nationalite} onChange={(e) => setNationalite(e.currentTarget.value)} className="form-control" placeholder="Entrer votre Nationalite" />
+                <input type="text" value={nationalite} onChange={(e) => setNationalite(e.currentTarget.value)} className="form-control" placeholder="Entrer votre Nationalite" required/>
             </div>
             <div className="col-md-6">
                 <label for="inputPassword4" className="form-label fw-bold">Facebook</label>
-                <input type="text" value={facebook} onChange={(e) => setFacebook(e.currentTarget.value)} className="form-control" placeholder="Entrer votre compte facebook" />
+                <input type="text" value={facebook} onChange={(e) => setFacebook(e.currentTarget.value)} className="form-control" placeholder="Entrer votre compte facebook" required/>
             </div>
             <div className="col-md-6">
                 <label for="inputEmail4" className="form-label fw-bold">Email</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.currentTarget.value)} className="form-control" placeholder="Entrer votre email" />
+                <input type="email" value={email} onChange={(e) => setEmail(e.currentTarget.value)} className="form-control" placeholder="Entrer votre email" required/>
             </div>
             <div className="col-md-6">
                 <label for="inputPassword4" className="form-label fw-bold">Ville</label>
-                <input type="text" value={ville} onChange={(e) => setVille(e.currentTarget.value)} className="form-control" placeholder="Entrer votre ville" />
+                <input type="text" value={ville} onChange={(e) => setVille(e.currentTarget.value)} className="form-control" placeholder="Entrer votre ville" required/>
             </div>
 
             <div className="col-md-6">
                 <label for="inputPassword4" className="form-label fw-bold">Date de naissance</label>
-                <input type="date" className="form-control" value={dateDeNaissance} onChange={e => setDateDeNaissance(e.currentTarget.value)} />
+                <input type="date" className="form-control" value={dateDeNaissance} onChange={e => setDateDeNaissance(e.currentTarget.value)} required/>
 
             </div>
             <div className="col-md-6">
                 <label for="inputPassword4" className="form-label fw-bold">Lieu de naissance</label>
-                <input type="text" value={lieuDeNaissance} onChange={(e) => setLieuDeNaissance(e.currentTarget.value)} className="form-control" placeholder="Entrer votre Lieu de naissance" />
+                <input type="text" value={lieuDeNaissance} onChange={(e) => setLieuDeNaissance(e.currentTarget.value)} className="form-control" placeholder="Entrer votre Lieu de naissance" required/>
             </div>
 
             <div className="col-md-3">
@@ -239,6 +238,7 @@ const RegistrationForm = () => {
                     placeholder="Enter votre numero de telephone"
                     value={tel}
                     onChange={setTel}
+                    required
                 />
             </div>
             <div className="col-md-3">
@@ -248,6 +248,7 @@ const RegistrationForm = () => {
                     placeholder="Enter le telephone de votre parent"
                     value={telParent}
                     onChange={setTelParent}
+                    required
                 />
             </div>
 
