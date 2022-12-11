@@ -10,6 +10,7 @@
     "firebase": "^9.9.0",
     "html-react-parser": "^3.0.1",
     "jquery": "^3.6.0",
+    "jquery.soap": "^1.7.3",
     "react": "^18.2.0",
     "react-auth-code-input": "^3.2.1",
     "react-bootstrap": "^2.4.0",

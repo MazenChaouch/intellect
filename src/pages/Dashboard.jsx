@@ -6,7 +6,7 @@ import { BsFillBookmarkPlusFill } from "react-icons/bs"
 import { useUserAuth } from "../context/userAuthContext";
 import { toast } from "react-toastify";
 import generateId from "../lib/generateId";
-import { collection, deleteDoc, doc, onSnapshot, query, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { fireStore, storage } from "../auth/Firebase";
 import { useState } from "react";
 import ReactQuill from 'react-quill';
@@ -16,7 +16,7 @@ import parse from 'html-react-parser';
 import PhoneInput from "react-phone-number-input";
 import { useRef } from "react";
 import AuthCode from 'react-auth-code-input';
-
+import {$ , soap} from 'jquery';
 const Dashboard = () => {
 
     document.title = "Dashboard - Intellect Academy";
@@ -82,7 +82,11 @@ const Dashboard = () => {
     const [codePostal, setCodePostal] = useState("");
     const [telParent, setTelParent] = useState("");
     const [niveau, setNiveau] = useState("");
-    const [cin, setCIN] = useState('');
+    const [cin, setCIN] = useState("");
+    const [cinid, setCINID] = useState("");
+    const [candidatbyid, setCandidatById] = useState([]);
+    const [tab , setTab] = useState([]);
+    const [sum , setSum] = useState("");
     const AuthInputRef = useRef(null);
 
     function validAlphabetLetter(letter) {
@@ -246,6 +250,20 @@ const Dashboard = () => {
             });
         });
     }
+    const getCandidatByCin = async () => {
+        const q = query(collection(fireStore, "candidats"),where("cin" == "cinid"));
+        const fetch = onSnapshot(q, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const result = querySnapshot.docs
+                    .map((doc) => ({ ...doc.data(), id: doc.id }));
+                setCandidatById(result);
+            });
+        });
+    }
+    const getPrix = () => {
+        candidatbyid.map((c,index) => {
+        })
+    } 
     const getFormations = async () => {
         const q = query(collection(fireStore, "formations"));
         const fetch = onSnapshot(q, (querySnapshot) => {
@@ -278,7 +296,47 @@ const Dashboard = () => {
         greet = 'Good Afternoon';
     else if (hrs >= 17 && hrs <= 24)
         greet = 'Good Evening';
-
+    const Sum  = () => {
+        let $ = require('jquery');
+        require('jquery.soap');
+        $.soap({
+                url: 'http://localhost:8080/Calulator/Sum/',
+                method: 'Sum',
+            appendMethodToURL: false,
+            namespace:"http://Sum/",
+             
+                data: {tab:14
+                },
+             
+                success: function (soapResponse) {
+                   setSum(soapResponse);
+                },
+                error: function (SOAPResponse) {
+                    // show error
+                }
+            });
+        }
+        function createCORSRequest(method, url){
+            var xhr = new XMLHttpRequest();
+            if ("withCredentials" in xhr){
+                xhr.open(method, url, true);
+            } else if (typeof XDomainRequest != "undefined"){
+                xhr = new XDomainRequest();
+                xhr.open(method, url);
+            } else {
+                xhr = null;
+            }
+            return xhr;
+        }
+        
+        var request = createCORSRequest("get", "http://localhost:8080/Calulator/Sum/");
+        if (request){
+            request.onload = function() {
+                // ...
+            };
+            request.onreadystatechange = handler;
+            request.send();
+        }
     return (
         <>
             <Navbar style={{ backgroundColor: "#110e66" }}>
@@ -314,7 +372,12 @@ const Dashboard = () => {
                         </Card>
                     </Col>
                 </Row>
-
+                <Row>
+                    <h2 className="mb-3 pt-5">total paiment d'une candidat</h2>
+                    <Col sm={6}><input/>{sum}</Col>
+                    <Col sm={6}><Button onClick={()=>Sum()}>Calcule</Button></Col>
+                    <Col></Col>
+                </Row>
                 <h2 className="mb-3 pt-5"><FaUsers size={25} className="mb-1" /> Nos candidats</h2>
                 <Table striped bordered hover size="sm" responsive>
                     <thead>
