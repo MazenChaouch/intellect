@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLinkClickHandler, useNavigate } from "react-router-dom";
 import { Button, Card, Col, Container, Modal, Navbar, Row, Table } from "react-bootstrap"
 import { FaTrash, FaUsers, FaEdit } from 'react-icons/fa'
 import { GiBookmarklet } from "react-icons/gi"
@@ -16,7 +16,7 @@ import parse from 'html-react-parser';
 import PhoneInput from "react-phone-number-input";
 import { useRef } from "react";
 import AuthCode from 'react-auth-code-input';
-import {$ , soap} from 'jquery';
+import { $, soap } from 'jquery';
 const Dashboard = () => {
 
     document.title = "Dashboard - Intellect Academy";
@@ -85,8 +85,8 @@ const Dashboard = () => {
     const [cin, setCIN] = useState("");
     const [cinid, setCINID] = useState("");
     const [candidatbyid, setCandidatById] = useState([]);
-    const [tab , setTab] = useState([]);
-    const [sum , setSum] = useState("");
+    const [tab, setTab] = useState([]);
+    const [sum, setSum] = useState("");
     const AuthInputRef = useRef(null);
 
     function validAlphabetLetter(letter) {
@@ -251,7 +251,7 @@ const Dashboard = () => {
         });
     }
     const getCandidatByCin = async () => {
-        const q = query(collection(fireStore, "candidats"),where("cin" == "cinid"));
+        const q = query(collection(fireStore, "candidats"), where("cin" == "cinid"));
         const fetch = onSnapshot(q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const result = querySnapshot.docs
@@ -261,9 +261,10 @@ const Dashboard = () => {
         });
     }
     const getPrix = () => {
-        candidatbyid.map((c,index) => {
+        candidatbyid.map((c, index) => {
+            tab.push(c.formation)
         })
-    } 
+    }
     const getFormations = async () => {
         const q = query(collection(fireStore, "formations"));
         const fetch = onSnapshot(q, (querySnapshot) => {
@@ -296,47 +297,41 @@ const Dashboard = () => {
         greet = 'Good Afternoon';
     else if (hrs >= 17 && hrs <= 24)
         greet = 'Good Evening';
-    const Sum  = () => {
+    const Sum = () => {
         let $ = require('jquery');
         require('jquery.soap');
         $.soap({
-                url: 'http://localhost:8080/Calulator/Sum/',
-                method: 'Sum',
+            url: 'https://www.dataaccess.com/webservicesserver/NumberConversion.wso',
+            method: 'NumberToWords',
             appendMethodToURL: false,
-            namespace:"http://Sum/",
-             
-                data: {tab:14
-                },
-             
-                success: function (soapResponse) {
-                   setSum(soapResponse);
-                },
-                error: function (SOAPResponse) {
-                    // show error
-                }
-            });
-        }
-        function createCORSRequest(method, url){
-            var xhr = new XMLHttpRequest();
-            if ("withCredentials" in xhr){
-                xhr.open(method, url, true);
-            } else if (typeof XDomainRequest != "undefined"){
-                xhr = new XDomainRequest();
-                xhr.open(method, url);
-            } else {
-                xhr = null;
+            namespaceURL: 'https://www.dataaccess.com/webservicesserver/',
+
+            data: {
+                ubiNum: 14
+            },
+
+            success: function (soapResponse) {
+                setSum(soapResponse);
+            },
+            error: function (SOAPResponse) {
+                // show error
             }
-            return xhr;
-        }
-        
-        var request = createCORSRequest("get", "http://localhost:8080/Calulator/Sum/");
-        if (request){
-            request.onload = function() {
-                // ...
-            };
-            request.onreadystatechange = handler;
-            request.send();
-        }
+        });
+    }
+    var settings = {
+        "url": "https://www.dataaccess.com/webservicesserver/NumberConversion.wso",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "text/xml; charset=utf-8"
+        },
+        "data": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">\n      <ubiNum>500</ubiNum>\n    </NumberToWords>\n  </soap:Body>\n</soap:Envelope>",
+      };
+      let $ = require('jquery');
+        require('jquery.soap');
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+      });
     return (
         <>
             <Navbar style={{ backgroundColor: "#110e66" }}>
@@ -374,8 +369,8 @@ const Dashboard = () => {
                 </Row>
                 <Row>
                     <h2 className="mb-3 pt-5">total paiment d'une candidat</h2>
-                    <Col sm={6}><input/>{sum}</Col>
-                    <Col sm={6}><Button onClick={()=>Sum()}>Calcule</Button></Col>
+                    <Col sm={6}><input />{sum}</Col>
+                    <Col sm={6}><Button onClick={() => Sum()}>Calcule</Button></Col>
                     <Col></Col>
                 </Row>
                 <h2 className="mb-3 pt-5"><FaUsers size={25} className="mb-1" /> Nos candidats</h2>
