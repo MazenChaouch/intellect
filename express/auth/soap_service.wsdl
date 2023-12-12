@@ -1,0 +1,171 @@
+<definitions
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="http://localhost:3000/soap-service">
+
+  <!-- Messages -->
+  <message name="addFormationRequest">
+    <part name="id" type="xsd:string" />
+    <part name="name" type="xsd:string" />
+    <part name="formateur" type="xsd:string" />
+    <part name="date" type="xsd:string" />
+    <part name="description" type="xsd:string" />
+    <part name="duration" type="xsd:string" />
+    <part name="price" type="xsd:float" />
+    <part name="image" type="xsd:string" />
+  </message>
+
+  <message name="addFormationResponse">
+    <part name="result" type="xsd:string" />
+  </message>
+
+  <message name="getFormationsRequest">
+  </message>
+
+  <message name="getFormationsResponse">
+    <part name="formations" type="xsd:string" />
+  </message>
+
+  <message name="deleteFormationRequest">
+    <part name="id" type="xsd:string" />
+  </message>
+
+  <message name="deleteFormationResponse">
+    <part name="result" type="xsd:string" />
+  </message>
+
+  <message name="addCandidatRequest">
+    <part name="cin" type="xsd:string" />
+    <part name="civilite" type="xsd:string" />
+    <part name="codePostal" type="xsd:string" />
+    <part name="date" type="xsd:string" />
+    <part name="dateDeNissance" type="xsd:string" />
+    <part name="email" type="xsd:string" />
+    <part name="facebook" type="xsd:string" />
+    <part name="firstname" type="xsd:string" />
+    <part name="formation" type="xsd:string" />
+    <part name="lastname" type="xsd:string" />
+    <part name="lieuDeNissance" type="xsd:string" />
+    <part name="nationalite" type="xsd:string" />
+    <part name="niveau" type="xsd:string" />
+    <part name="situation" type="xsd:string" />
+    <part name="tel" type="xsd:string" />
+    <part name="telParent" type="xsd:string" />
+    <part name="ville" type="xsd:string" />
+  </message>
+
+  <message name="addCandidatResponse">
+    <part name="result" type="xsd:string" />
+  </message>
+
+  <message name="getCandidatsRequest">
+  </message>
+
+  <message name="getCandidatsResponse">
+    <part name="candidats" type="xsd:string" />
+  </message>
+
+  <message name="deleteCandidatRequest">
+    <part name="id" type="xsd:string" />
+  </message>
+
+  <message name="deleteCandidatResponse">
+    <part name="result" type="xsd:string" />
+  </message>
+
+  <!-- PortType -->
+  <portType name="YourServicePortType">
+    <operation name="addFormation">
+      <input message="tns:addFormationRequest" />
+      <output message="tns:addFormationResponse" />
+    </operation>
+    <operation name="getFormations">
+      <input message="tns:getFormationsRequest" />
+      <output message="tns:getFormationsResponse" />
+    </operation>
+    <operation name="deleteFormation">
+      <input message="tns:deleteFormationRequest" />
+      <output message="tns:deleteFormationResponse" />
+    </operation>
+    <operation name="addCandidat">
+      <input message="tns:addCandidatRequest" />
+      <output message="tns:addCandidatResponse" />
+    </operation>
+    <operation name="getCandidats">
+      <input message="tns:getCandidatsRequest" />
+      <output message="tns:getCandidatsResponse" />
+    </operation>
+    <operation name="deleteCandidat">
+      <input message="tns:deleteCandidatRequest" />
+      <output message="tns:deleteCandidatResponse" />
+    </operation>
+  </portType>
+
+  <!-- Binding -->
+  <binding name="YourServiceBinding" type="tns:YourServicePortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="addFormation">
+      <soap:operation soapAction="addFormation" />
+      <input>
+        <soap:body use="encoded" namespace="http://localhost:3000/addFormation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://localhost:3000/getFormations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <!-- Define bindings for other operations similarly -->
+    <operation name="getFormations">
+      <soap:operation soapAction="getFormations" />
+      <input>
+        <soap:body use="encoded" namespace="http://localhost:3000/getFormations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://localhost:3000/getFormations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="deleteFormation">
+      <soap:operation soapAction="deleteFormation" />
+      <input>
+        <soap:body use="encoded" namespace="http://localhost:3000/deleteFormation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://localhost:3000/deleteFormation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="addCandidat">
+      <soap:operation soapAction="addCandidat" />
+      <input>
+        <soap:body use="encoded" namespace="http://localhost:3000/addCandidat" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://localhost:3000/addCandidat" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="getCandidats">
+      <soap:operation soapAction="getCandidats" />
+      <input>
+        <soap:body use="encoded" namespace="http://localhost:3000/getCandidats" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://localhost:3000/getCandidats" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="deleteCandidat">
+      <soap:operation soapAction="deleteCandidat" />
+      <input>
+        <soap:body use="encoded" namespace="http://localhost:3000/deleteCandidat" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://localhost:3000/deleteCandidat" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+
+  <!-- Service -->
+  <service name="YourService">
+    <port name="YourServicePort" binding="tns:YourServiceBinding">
+      <soap:address location="http://localhost:3000/soap-service" />
+    </port>
+  </service>
+</definitions>
